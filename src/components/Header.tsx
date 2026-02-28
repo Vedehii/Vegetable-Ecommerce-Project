@@ -117,12 +117,14 @@ import {
   Leaf,
   MapPin,
   LogIn,
+  MoreVertical,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { getCreditStatus, getMyOrders } from "@/api/axios";
 
 const locations = [
   "Mumbai",
@@ -157,6 +159,30 @@ const Header = () => {
       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
+
+  // ============ Fetch User Data ============
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const fetchData = async () => {
+      try {
+        const ordersRes = await getMyOrders();
+        const orders = ordersRes?.data || ordersRes || [];
+        setOrderCount(orders.length || 0);
+
+        const creditRes = await getCreditStatus();
+        const creditData = creditRes?.data || creditRes;
+        setCredit(creditData?.availableCredit || 0);
+      } catch (err) {
+        console.log("Header API Error:", err);
+      }
+    };
+    fetchData();
+  }, [isAuthenticated]);
+
+  function setShowMenuDropdown(arg0: boolean): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <>
@@ -273,7 +299,7 @@ const Header = () => {
           <div className="flex items-center gap-3">
             {isAuthenticated && user && (
               <span className="hidden md:block text-sm font-medium text-muted-foreground">
-                Hi, {user.name}
+                Hi  {user.name}
               </span>
             )}
 
@@ -292,6 +318,30 @@ const Header = () => {
                 </motion.span>
               )}
             </button>
+            
+            {isAuthenticated && (
+              <div className="relative">
+                <button onClick={() => setShowMenuDropdown(!setShowMenuDropdown)} className="p-2 rounded-full hover:bg-secondary transition">
+                  <MoreVertical className="w-5 h-5" />
+                </button>
+                {setShowMenuDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl z-50 p-4"
+                  >
+                    <div className="space-y-3 text-sm">
+                      {/* <div className="flex justify-between"><span>Orders</span><span className="font-semibold">{orderCount}</span></div>
+                      <div className="flex justify-between"><span>Credit</span><span className="font-semibold text-primary">₹ {credit}</span></div> */}
+                      <hr />
+                      <button onClick={() => navigate("/my-orders")} className="w-full text-left hover:text-primary">My Orders</button>
+                      <button onClick={() => navigate("/my-addresses")} className="w-full text-left hover:text-primary">My Addresses</button>
+                      <button onClick={() => navigate("/credit-status")} className="w-full text-left hover:text-primary">Credit Status</button>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            )}
 
             {isAuthenticated ? (
               <button
@@ -318,3 +368,11 @@ const Header = () => {
 };
 
 export default Header;
+
+function setOrderCount(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+function setCredit(arg0: any) {
+  throw new Error("Function not implemented.");
+}
+

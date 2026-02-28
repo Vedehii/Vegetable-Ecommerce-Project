@@ -27,7 +27,7 @@ const About = () => {
   return (
     
     <div className="w-full bg-background text-foreground">
-    <Header />
+    
       {/* 🔹 HERO SECTION */}
       <section className="relative h-[420px] flex items-center justify-center text-center">
         <img
@@ -221,9 +221,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* 🔹 FOOTER CTA */}
       
-      <SemicircleFooter/>
     </div>
   );
 };

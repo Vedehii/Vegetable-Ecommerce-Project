@@ -218,15 +218,6 @@ const KisanCommunity = () => {
             ))}
           </div>
         </div>
-
-        <div className="text-center mt-8">
-          <a
-            href="#"
-            className="text-green-700 font-medium underline hover:text-green-800"
-          >
-            View All...
-          </a>
-        </div>
       </div>
     </section>
   );

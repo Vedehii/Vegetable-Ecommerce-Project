@@ -41,16 +41,16 @@ const LandingPromo = () => {
 
     {/* LEFT IMAGE (ROTATING + SLIDE IN FROM LEFT) */}
     <motion.div
-      initial={{ opacity: 0, x: -150, rotate: -25 }}
-      whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        type: "spring",
-        stiffness: 80,
-        damping: 14,
-      }}
-      className="flex justify-center"
-    >
+  initial={{ opacity: 0, x: -150 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true }}
+  transition={{
+    type: "tween",
+    duration: 0.6,
+    ease: "easeInOut",
+  }}
+  className="flex justify-center"
+>
       <img
         src={veggies}
         alt="Fruit Plate"
